@@ -67,6 +67,20 @@ const getAll = async() => {
     }
 }
 
+// addStudent adds a new student's data into my MongoDB database.
+const addStudent = async(studentObj) => { // studentObj is a JSON object conforming to our defined schema
+    try {
+        const newStudent = new Student(studentObj); // this create a new Student document based on studentObj, but doesn't add it just yet.
+        newStudent.save((err, savedObj) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(savedObj);
+        });
+    }
+    catch (err) {
+        console.log(err);    }
+}
 
 // async functions can be called in the top-level of your code, but they CANNOT USE await.
 // To get around that, create an entry point function that is async and then call your other async functions in that.
@@ -74,6 +88,18 @@ const main = async() => {
     // Call your other async functions here
     // You can also write regular JS code here as well.
     await connectToDB();
+
+    // New student data added.
+    let aNewStudent = {
+        studentID: 9845670,
+        firstName: "April",
+        lastName: "Hoover",
+        email: "ahoover@email.com",
+        major: "Accounting",
+        registrationStatus: true
+    }
+    await addStudent(aNewStudent);
+
     await getAll();
 }
 
